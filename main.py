@@ -14,6 +14,7 @@ pygame.display.set_caption("Platformer")
 level = Level(screen)
 level_width = level.level_width
 level_height = level.level_height
+background_image = pygame.image.load("assets/background.png").convert()
 
 camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT, level_width, level_height)
 player = Player((100, 100))
@@ -34,7 +35,7 @@ while running:
     camera.update(player.rect)
 
     # Малювання
-    screen.fill((100, 150, 255))  # Фон
+    screen.blit(background_image, (0, 0))
     level.draw(camera)
     screen.blit(player.image, camera.apply(player.rect))
 
