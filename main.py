@@ -28,8 +28,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # Оновлення логіки
-    player.update(keys, level.get_tiles())
+    # Оновлення логіки - передаємо розміри рівня замість екрану
+    player.update(keys, level.get_tiles(), level_width, level_height)
     level.update()
     camera.update(player.rect)
 

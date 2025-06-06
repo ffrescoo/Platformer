@@ -158,16 +158,26 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.image = self.idle_frame_left
 
-    def check_boundaries(self, screen_width):
-        """Перевірка меж екрану"""
+    def check_level_boundaries(self, level_width, level_height):
+        """Перевірка меж рівня (замість меж екрану)"""
         if self.rect.left < 0:
             self.rect.left = 0
             self.vel_x = 0
-        elif self.rect.right > screen_width:
-            self.rect.right = screen_width
+        elif self.rect.right > level_width:
+            self.rect.right = level_width
             self.vel_x = 0
+            
+        # Перевірка вертикальних меж
+        if self.rect.top < 0:
+            self.rect.top = 0
+            self.vel_y = 0
+        elif self.rect.bottom > level_height:
+            # Якщо персонаж впав за межі рівня, повертаємо його на останню безпечну позицію
+            self.rect.bottom = level_height - 50
+            self.vel_y = 0
+            self.on_ground = True
 
-    def update(self, keys, tiles, screen_width=800):
+    def update(self, keys, tiles, level_width=1280, level_height=384):
         """Головний цикл оновлення персонажа"""
         # 1. Обробка введення
         self.handle_input(keys)
@@ -188,17 +198,11 @@ class Player(pygame.sprite.Sprite):
         # 4. Перевірка контакту з землею
         self.check_ground_contact(tiles)
         
-        # 5. Перевірка меж екрану
-        self.check_boundaries(screen_width)
+        # 5. Перевірка меж РІВНЯ (не екрану!)
+        self.check_level_boundaries(level_width, level_height)
         
         # 6. Анімація
         self.animate()
-        
-        # 7. Аварійна перевірка падіння під карту
-        if self.rect.y > 600:  # Якщо персонаж впав надто низько
-            self.rect.bottom = 550
-            self.vel_y = 0
-            self.on_ground = True
 
     def reset_position(self, pos):
         """Скидання позиції персонажа"""
