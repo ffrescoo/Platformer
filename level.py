@@ -9,6 +9,7 @@ class Level:
         self.tile_size = 32
         self.tiles = pygame.sprite.Group()
         self.coins = pygame.sprite.Group()
+        self.coins_collected = 0
 
         self.spritesheet = SpriteSheet("assets/tile.png")
         self.original_tile_size = 16
@@ -118,6 +119,7 @@ class Level:
         for coin in self.coins:
             if player.rect.colliderect(coin.rect):
                 self.coins.remove(coin)
+                self.coins_collected += 1
                 # (тут можеш додати звук або +1 монета)
 
         
