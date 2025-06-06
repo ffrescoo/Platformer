@@ -1,6 +1,7 @@
 import pygame
 from level import Level
 from player import Player
+from camera import Camera
 
 pygame.init()
 
@@ -9,10 +10,12 @@ SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Platformer")
 
-tile_img = pygame.image.load("assets/tile.png").convert_alpha()
-
 # Ініціалізація рівня та гравця
 level = Level(screen)
+level_width = level.level_width
+level_height = level.level_height
+
+camera = Camera(SCREEN_WIDTH, SCREEN_HEIGHT, level_width, level_height)
 player = Player((100, 100))
 
 clock = pygame.time.Clock()
@@ -20,17 +23,21 @@ running = True
 
 while running:
     keys = pygame.key.get_pressed()
-    level.update()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    screen.fill((100, 150, 255))  # Фон
-    level.draw()
+    # Оновлення логіки
     player.update(keys, level.get_tiles())
-    screen.blit(player.image, player.rect)
-    
+    level.update()
+    camera.update(player.rect)
+
+    # Малювання
+    screen.fill((100, 150, 255))  # Фон
+    level.draw(camera)
+    screen.blit(player.image, camera.apply(player.rect))
+
     pygame.display.update()
     clock.tick(60)
 

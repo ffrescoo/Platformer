@@ -30,7 +30,7 @@ class Level:
 
 
         # Рівень
-        level_map = [
+        self.level_map = [
             "                                        ",
             "                                        ",
             "                                        ",
@@ -44,8 +44,9 @@ class Level:
             "      $                                 ",        
             "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
         ]
-
-        self.create_level(level_map)
+        self.level_width = len(self.level_map[0]) * self.tile_size
+        self.level_height = len(self.level_map) * self.tile_size
+        self.create_level(self.level_map)
 
     def create_level(self, level_map):
         for row_index, row in enumerate(level_map):
@@ -92,9 +93,11 @@ class Level:
     def update(self):
         self.coins.update()
 
-    def draw(self):
-        self.tiles.draw(self.display_surface)
-        self.coins.draw(self.display_surface)
+    def draw(self, camera):
+        for tile in self.tiles:
+            self.display_surface.blit(tile.image, camera.apply(tile.rect))
+        for coin in self.coins:
+            self.display_surface.blit(coin.image, camera.apply(coin.rect))
 
     def handle_collision(self, player):
         collisions = []
