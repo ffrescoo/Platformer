@@ -2,6 +2,7 @@ import pygame
 from tile import Tile
 from coin import Coin
 from spritesheet import SpriteSheet
+from portal import Portal
 
 class Level:
     def __init__(self, surface):
@@ -10,6 +11,7 @@ class Level:
         self.tiles = pygame.sprite.Group()
         self.coins = pygame.sprite.Group()
         self.coins_collected = 0
+        self.portals = pygame.sprite.Group()
 
         self.spritesheet = SpriteSheet("assets/tile.png")
         self.original_tile_size = 16
@@ -41,7 +43,7 @@ class Level:
             "                                        ",
             "                            $           ",
             "                           XXX          ",
-            "               XXXX                     ",
+            "               XXXX                   P ",
             "      $                                 ",        
             "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
         ]
@@ -69,6 +71,10 @@ class Level:
                 elif char == "$":
                     coin = Coin(x, y)
                     self.coins.add(coin)
+                elif char == "P":
+                    portal = Portal(x,y)
+                    self.portals.add(portal)
+
                 
 
                 col_index += 1
@@ -93,12 +99,16 @@ class Level:
 
     def update(self):
         self.coins.update()
+        self.portals.update()
 
     def draw(self, camera):
         for tile in self.tiles:
             self.display_surface.blit(tile.image, camera.apply(tile.rect))
         for coin in self.coins:
             self.display_surface.blit(coin.image, camera.apply(coin.rect))
+        for portal in self.portals:
+            self.display_surface.blit(portal.image, camera.apply(portal.rect))
+
 
     def handle_collision(self, player):
         collisions = []
@@ -122,7 +132,25 @@ class Level:
                 self.coins_collected += 1
                 # (тут можеш додати звук або +1 монета)
 
+        for portal in self.portals:
+            if player.rect.colliderect(portal.rect):
+                self.next_level()   
+
         
 
     def get_tiles(self):
         return self.tiles
+    
+    def next_level(self):
+        self.tiles.empty()
+        self.coins.empty()
+        self.portals.empty()
+
+        new_level_map = [
+        "                                        ",
+        "                                        ",
+        "                                P       ",
+        "                                        ",
+        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        ]
+        self.create_level(new_level_map)
