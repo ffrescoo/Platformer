@@ -31,7 +31,7 @@ class Player(pygame.sprite.Sprite):
         self.animation_speed = 6
         self.is_moving = False
         
-        # ВИПРАВЛЕНА ФІЗИКА
+        
         self.vel_x = 0  # Горизонтальна швидкість
         self.vel_y = 0  # Вертикальна швидкість
         self.on_ground = False
@@ -83,7 +83,7 @@ class Player(pygame.sprite.Sprite):
         # Горизонтальний рух
         self.rect.x += self.vel_x
         
-        # ВИПРАВЛЕНА ГРАВІТАЦІЯ - завжди діє коли не на землі
+        
         if not self.on_ground:
             self.vel_y += GRAVITY
         
@@ -205,11 +205,10 @@ class Player(pygame.sprite.Sprite):
         self.animate()
 
     def reset_position(self, pos):
-        """Скидання позиції персонажа"""
         self.rect.topleft = pos
-        self.vel_x = 0
         self.vel_y = 0
         self.on_ground = False
+
 
     def get_debug_info(self):
         """Інформація для дебагу"""

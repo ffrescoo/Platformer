@@ -3,6 +3,8 @@ from tile import Tile
 from coin import Coin
 from spritesheet import SpriteSheet
 from portal import Portal
+from level_data import levels
+from player import Player
 
 class Level:
     def __init__(self, surface):
@@ -12,6 +14,9 @@ class Level:
         self.coins = pygame.sprite.Group()
         self.coins_collected = 0
         self.portals = pygame.sprite.Group()
+        self.current_level = 0
+        self.levels = levels
+        
 
         self.spritesheet = SpriteSheet("assets/tile.png")
         self.original_tile_size = 16
@@ -31,25 +36,9 @@ class Level:
             frame = self.spritesheet.get_image(i * 16, 0, 16, 16, self.scale)
             self.coin_frames.append(frame)
 
-
+        self.load_level(self.current_level)
         # Рівень
-        self.level_map = [
-            "                                        ",
-            "                                        ",
-            "                                        ",
-            "                                        ",
-            "                                        ",
-            "                                        ",
-            "                                        ",
-            "                            $           ",
-            "                           XXX          ",
-            "               XXXX                   P ",
-            "      $                                 ",        
-            "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-        ]
-        self.level_width = len(self.level_map[0]) * self.tile_size
-        self.level_height = len(self.level_map) * self.tile_size
-        self.create_level(self.level_map)
+        
 
     def create_level(self, level_map):
         for row_index, row in enumerate(level_map):
@@ -134,23 +123,28 @@ class Level:
 
         for portal in self.portals:
             if player.rect.colliderect(portal.rect):
-                self.next_level()   
+                self.next_level(player)   
 
         
 
     def get_tiles(self):
         return self.tiles
     
-    def next_level(self):
+    def next_level(self, player):
+        self.current_level += 1
+        self.load_level(self.current_level)
+        player.reset_position((100,100))
+
+    def load_level(self, index):
         self.tiles.empty()
         self.coins.empty()
         self.portals.empty()
 
-        new_level_map = [
-        "                                        ",
-        "                                        ",
-        "                                P       ",
-        "                                        ",
-        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-        ]
-        self.create_level(new_level_map)
+        if index < len(self.levels):
+            self.current_level = index
+            level_map = self.levels[index]
+            self.level_width = len(level_map[0]) * self.tile_size
+            self.level_height = len(level_map) * self.tile_size
+            self.create_level(level_map)
+        else:
+            print("Всі рівні завершено!")

@@ -12,6 +12,7 @@ pygame.display.set_caption("Platformer")
 
 # Ініціалізація рівня та гравця
 level = Level(screen)
+level.load_level(0)
 level_width = level.level_width
 level_height = level.level_height
 background_image = pygame.image.load("assets/background.png").convert()
