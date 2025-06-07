@@ -136,6 +136,10 @@ class Level:
         player.reset_position((100,100))
 
     def load_level(self, index):
+        if index >= len(self.levels):
+            self.show_end_screen()
+            return
+
         self.tiles.empty()
         self.coins.empty()
         self.portals.empty()
@@ -146,5 +150,30 @@ class Level:
             self.level_width = len(level_map[0]) * self.tile_size
             self.level_height = len(level_map) * self.tile_size
             self.create_level(level_map)
-        else:
-            print("Всі рівні завершено!")
+    
+    def show_end_screen(self):
+        font = pygame.font.SysFont("Arial", 48)
+        small_font = pygame.font.SysFont("Arial", 30)
+        clock = pygame.time.Clock()
+
+        while True:
+            self.display_surface.fill((0, 0, 0))
+            text = font.render("Вітаємо! Ви пройшли гру!", True, (255, 255, 255))
+            button_text = small_font.render("Натисніть ENTER, щоб почати знову", True, (255, 255, 255))
+
+            self.display_surface.blit(text, (self.display_surface.get_width() // 2 - text.get_width() // 2, 200))
+            self.display_surface.blit(button_text, (self.display_surface.get_width() // 2 - button_text.get_width() // 2, 300))
+
+            pygame.display.update()
+            
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        self.current_level = 0
+                        self.load_level(self.current_level)
+                        return
+                    
+            clock.tick(60)

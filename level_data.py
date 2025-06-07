@@ -6,10 +6,10 @@ levels = [
         "                                        "
         "                                        ",
         "                                        ",
-        "                             P          ",
-        "                    XX    XXXXXXX       ",
+        "                                        ",
+        "                    XXXXXXX      P      ",
         "              XX                        ",
-        "       $                                ",
+        "       $                       XXXXX    ",
         "      XXX                               ",
         "               $                        ",
         "            XXXXXXXX                    ",
@@ -20,15 +20,15 @@ levels = [
     [
         "                                        ",
         "                                        ",
-        "                              $         ",
-        "                            XXXX        ",
-        "                                        ",
-        "            $                           ",
-        "        XXXX                            ",
-        "                                        ",
-        "                          P             ",
-        "                                        ",
-        "                                        ",
+        "                    $$                  ",
+        "             $      XX                  ",
+        "            XXXX    XX                  ",
+        "   XX               XX                  ",
+        "                    XX                  ",
+        "        XX          XX                  ",
+        "                    XX                  ",
+        "             XX     XX              P   ",
+        "                    XX                  ",
         "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     ]
 ]
