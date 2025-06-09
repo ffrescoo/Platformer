@@ -1,8 +1,12 @@
 import pygame
 from spritesheet import SpriteSheet
 from settings import PLAYER_SPEED, GRAVITY, JUMP_STRENGTH
+import pygame.mixer
 
 class Player(pygame.sprite.Sprite):
+    pygame.mixer.init()
+    jump_sound = pygame.mixer.Sound("assets/jump.wav")
+    jump_sound.set_volume(0.1)
     def __init__(self, pos):
         super().__init__()
         self.sprite_sheet = SpriteSheet("assets/characters.png")
@@ -77,6 +81,10 @@ class Player(pygame.sprite.Sprite):
         if (keys[pygame.K_SPACE] or keys[pygame.K_UP] or keys[pygame.K_w]) and self.on_ground:
             self.vel_y = -JUMP_STRENGTH
             self.on_ground = False
+            self.jump_sound.play()
+            
+
+
 
     def apply_physics(self):
         """Застосування фізики руху"""

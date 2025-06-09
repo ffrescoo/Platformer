@@ -26,6 +26,11 @@ running = True
 pygame.font.init()
 font = pygame.font.SysFont('Arial', 30)
 
+pygame.mixer.music.load("assets/back-music.mp3")
+pygame.mixer.music.set_volume(0.1)
+pygame.mixer.music.play(-1)
+
+
 while running:
     keys = pygame.key.get_pressed()
 

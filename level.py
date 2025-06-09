@@ -5,8 +5,14 @@ from spritesheet import SpriteSheet
 from portal import Portal
 from level_data import levels
 from player import Player
+import pygame.mixer
 
 class Level:
+    pygame.mixer.init()
+    coin_sound = pygame.mixer.Sound("assets/coin.wav")
+    coin_sound.set_volume(0.1)
+    teleport_sound = pygame.mixer.Sound("assets/teleport.wav")
+    teleport_sound.set_volume(0.1)
     def __init__(self, surface):
         self.display_surface = surface
         self.tile_size = 32
@@ -16,7 +22,6 @@ class Level:
         self.portals = pygame.sprite.Group()
         self.current_level = 0
         self.levels = levels
-        
 
         self.spritesheet = SpriteSheet("assets/tile.png")
         self.original_tile_size = 16
@@ -118,12 +123,14 @@ class Level:
         for coin in self.coins:
             if player.rect.colliderect(coin.rect):
                 self.coins.remove(coin)
+                self.coin_sound.play()
                 self.coins_collected += 1
-                # (тут можеш додати звук або +1 монета)
+                
 
         for portal in self.portals:
             if player.rect.colliderect(portal.rect):
-                self.next_level(player)   
+                self.next_level(player)
+                self.teleport_sound.play()   
 
         
 
