@@ -181,9 +181,8 @@ class Player(pygame.sprite.Sprite):
             self.vel_y = 0
         elif self.rect.bottom > level_height:
             # Якщо персонаж впав за межі рівня, повертаємо його на останню безпечну позицію
-            self.rect.bottom = level_height - 50
-            self.vel_y = 0
-            self.on_ground = True
+            self.reset_position((100,100))
+            
 
     def update(self, keys, tiles, level_width=1280, level_height=384):
         """Головний цикл оновлення персонажа"""

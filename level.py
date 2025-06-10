@@ -103,6 +103,9 @@ class Level:
             self.message_timer -= 1
         else:
             self.show_collect_all_message = False
+        
+        
+        
 
     def draw(self, camera):
         for tile in self.tiles:
@@ -160,7 +163,7 @@ class Level:
                     self.show_collect_all_message = True  
                     self.message_timer = 120
 
-
+        
 
         
 
