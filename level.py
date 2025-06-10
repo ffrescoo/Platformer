@@ -9,6 +9,7 @@ import pygame.mixer
 
 class Level:
     pygame.mixer.init()
+    pygame.font.init()
     coin_sound = pygame.mixer.Sound("assets/coin.wav")
     coin_sound.set_volume(0.1)
     teleport_sound = pygame.mixer.Sound("assets/teleport.wav")
@@ -22,6 +23,9 @@ class Level:
         self.portals = pygame.sprite.Group()
         self.current_level = 0
         self.levels = levels
+        self.show_collect_all_message = False
+        self.message_timer = 0
+    
 
         self.spritesheet = SpriteSheet("assets/tile.png")
         self.original_tile_size = 16
@@ -95,6 +99,11 @@ class Level:
         self.coins.update()
         self.portals.update()
 
+        if self.message_timer > 0:
+            self.message_timer -= 1
+        else:
+            self.show_collect_all_message = False
+
     def draw(self, camera):
         for tile in self.tiles:
             self.display_surface.blit(tile.image, camera.apply(tile.rect))
@@ -103,7 +112,21 @@ class Level:
         for portal in self.portals:
             self.display_surface.blit(portal.image, camera.apply(portal.rect))
 
+        if hasattr(self, 'show_collect_all_message') and self.show_collect_all_message:
+            self.font = pygame.font.SysFont('Sans', 30)
+            message_text = self.font.render("Зібрано не всі монети на рівні!", True, (255, 0, 0))
 
+            self.screen_width = self.display_surface.get_width()
+            self.screen_height = self.display_surface.get_height()
+            self.text_width = message_text.get_width()
+            self.text_height = message_text.get_height()
+
+            x = (self.screen_width - self.text_width ) // 2
+            y = (self.screen_height - self.text_height) // 2
+
+            self.display_surface.blit(message_text, (x,y))
+            
+    
     def handle_collision(self, player):
         collisions = []
         for tile in self.tiles:
@@ -119,6 +142,7 @@ class Level:
                 player.rect.top = tile.rect.bottom
                 player.vel_y = 0
 
+        
         # Монети: перевірка зіткнення
         for coin in self.coins:
             if player.rect.colliderect(coin.rect):
@@ -129,8 +153,14 @@ class Level:
 
         for portal in self.portals:
             if player.rect.colliderect(portal.rect):
-                self.next_level(player)
-                self.teleport_sound.play()   
+                if len(self.coins) == 0:
+                    self.next_level(player)
+                    self.teleport_sound.play()
+                else:
+                    self.show_collect_all_message = True  
+                    self.message_timer = 120
+
+
 
         
 
