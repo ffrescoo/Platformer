@@ -133,9 +133,9 @@ class Player(pygame.sprite.Sprite):
         """Перевірка чи персонаж стоїть на землі"""
         # Створюємо невеликий прямокутник під персонажем для перевірки
         ground_check_rect = pygame.Rect(
-            self.rect.x + 5,  # Трохи всередину
+            self.rect.x + 5, 
             self.rect.bottom,
-            self.rect.width - 10,  # Трохи вужче
+            self.rect.width - 10,  
             5  # Висота перевірки
         )
         
@@ -167,7 +167,6 @@ class Player(pygame.sprite.Sprite):
                 self.image = self.idle_frame_left
 
     def check_level_boundaries(self, level_width, level_height):
-        """Перевірка меж рівня (замість меж екрану)"""
         if self.rect.left < 0:
             self.rect.left = 0
             self.vel_x = 0
@@ -205,7 +204,7 @@ class Player(pygame.sprite.Sprite):
         # 4. Перевірка контакту з землею
         self.check_ground_contact(tiles)
         
-        # 5. Перевірка меж РІВНЯ (не екрану!)
+        # 5. Перевірка меж РІВНЯ
         self.check_level_boundaries(level_width, level_height)
         
         # 6. Анімація

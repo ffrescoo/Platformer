@@ -1,5 +1,3 @@
-# spritesheet.py
-
 import pygame
 
 class SpriteSheet:

@@ -11,7 +11,6 @@ class Portal(pygame.sprite.Sprite):
         # Завантажуємо спрайтшіт порталу
         portal_sheet = pygame.image.load(os.path.join("assets", "portal.png")).convert_alpha()
 
-        # Припустимо, кадри ідуть горизонтально, розмір кожного 16x32 пікселів (підкоригуй за своїм спрайтшитом)
         frame_width, frame_height = 32, 32
         for i in range(5):
             frame = portal_sheet.subsurface(pygame.Rect(i * frame_width, 0, frame_width, frame_height))

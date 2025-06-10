@@ -213,6 +213,7 @@ class Level:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
                         self.current_level = 0
+                        self.coins_collected = 0
                         self.load_level(self.current_level)
                         return
                     
